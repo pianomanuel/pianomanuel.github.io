@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Book of Revelation | Living in Light of Things to Come | Tony Evans Companion Study</title>
+<meta name="description" content="Companion study guide for Dr. Tony Evans' 10-session RightNow Media series on the Book of Revelation. Live faithfully in the present in light of God's final plan.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --deep: #12263a;
+  --gold: #c9a227;
+  --gold-light: #e8d48b;
+  --cream: #f7f3e9;
+  --text: #e8e4d9;
+  --muted: #a8a29e;
+  --card: rgba(18, 38, 58, 0.85);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  background: var(--navy);
+  color: var(--text);
+  line-height: 1.65;
+  background-image: radial-gradient(ellipse at top, #1a365d 0%, var(--navy) 60%);
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+header {
+  text-align: center;
+  padding: 4rem 1rem 2rem;
+  background: linear-gradient(180deg, rgba(10,22,40,0.4), transparent);
+}
+h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  color: var(--gold-light);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+.series-meta { color: var(--muted); font-size: 0.95rem; }
+.trailer-wrap {
+  margin: 2rem auto;
+  max-width: 720px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  border: 1px solid rgba(201,162,39,0.3);
+}
+.trailer-wrap iframe { width: 100%; aspect-ratio: 16/9; border: 0; }
+section { padding: 3rem 0; }
+h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+.intro-box, .quote-box {
+  background: var(--card);
+  border: 1px solid rgba(201,162,39,0.25);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(6px);
+}
+.quote-box {
+  font-style: italic;
+  border-left: 4px solid var(--gold);
+  text-align: center;
+  font-size: 1.1rem;
+}
+.quote-box strong { color: var(--gold-light); font-style: normal; }
+.sessions {
+  display: grid;
+  gap: 1.25rem;
+}
+.session {
+  background: var(--card);
+  border: 1px solid rgba(201,162,39,0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.session:hover { transform: translateY(-2px); border-color: rgba(201,162,39,0.45); }
+.session-header {
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.15);
+}
+.session-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  color: var(--gold-light);
+}
+.session-num { color: var(--gold); font-weight: 600; margin-right: 0.5rem; }
+.chevron { color: var(--gold); transition: transform 0.25s; }
+.session.open .chevron { transform: rotate(180deg); }
+.session-body {
+  display: none;
+  padding: 0 1.5rem 1.5rem;
+  border-top: 1px solid rgba(201,162,39,0.15);
+}
+.session.open .session-body { display: block; }
+.scripture { color: var(--gold); font-weight: 600; margin: 1rem 0 0.5rem; }
+ul { margin: 0.5rem 0 1rem 1.25rem; }
+li { margin-bottom: 0.35rem; }
+.questions { margin-top: 0.75rem; }
+.questions li { font-style: italic; color: #ddd; }
+.application {
+  background: rgba(201,162,39,0.08);
+  border-left: 3px solid var(--gold);
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+}
+.resources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.resources a {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  background: var(--gold);
+  color: var(--navy);
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.resources a:hover { background: var(--gold-light); }
+footer {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(201,162,39,0.15);
+}
+footer a { color: var(--gold); }
+@media (max-width: 640px) {
+  .session-header { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <h1>The Book of Revelation</h1>
+    <p class="subtitle">Living in Light of Things to Come</p>
+    <p class="series-meta">A 10-session companion study based on Dr. Tony Evans’ RightNow Media series<br>
+    Shared for Bible study • Robert Manuel</p>
+  </div>
+</header>
+
+<div class="container">
+  <div class="trailer-wrap">
+    <iframe src="https://www.youtube.com/embed/BwhhAjOPR24" title="The Book of Revelation with Tony Evans | Official Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+
+  <section>
+    <h2>Series Overview</h2>
+    <div class="intro-box">
+      <p>Visions of the end of the world can fill us with anxiety and fear. Yet for Christians, the end times are not something to dread. In the book of Revelation, God has given a preview of what is to come so that we might confidently trust Him with our future.</p>
+      <p style="margin-top:1rem;">In this ten-session series, Dr. Tony Evans walks through the book of Revelation verse by verse, uncovering God’s final plan for human history and our eternal destiny. This is more than a strange book of symbols—it is a call to worship God and live faithfully in the present.</p>
+      <p style="margin-top:1rem;">The purpose of Revelation is to tell Christians how we ought to live in light of things to come, and to tell non-Christians why they need to take Christ seriously in light of things to come.</p>
+    </div>
+
+    <div class="quote-box">
+      “What is Satan’s ultimate goal? His goal is to be like the Most High. He wants the world to worship him.<br>
+      A question that we face today… is <strong>who are you worshiping?</strong>”
+      <br><br>— from the official trailer
+    </div>
+  </section>
+
+  <section>
+    <h2>Ten Sessions</h2>
+    <p style="text-align:center; color:var(--muted); margin-bottom:1.5rem; max-width:700px; margin-left:auto; margin-right:auto;">
+      This companion organizes the book into ten logical sessions that mirror a verse-by-verse journey. Full video sessions and the official free study guide are available only on RightNow Media. Use these outlines, questions, and applications alongside the videos or for personal reflection.
+    </p>
+
+    <div class="sessions" id="sessions">
+      <!-- Sessions will be populated by JS or static -->
+    </div>
+  </section>
+
+  <section>
+    <h2>Resources</h2>
+    <div class="resources">
+      <a href="https://app.rightnowmedia.org/content/details/808849" target="_blank" rel="noopener">Open on RightNow Media</a>
+      <a href="https://rnow.me/book-of-revelation" target="_blank" rel="noopener">Series Link (rnow.me)</a>
+      <a href="https://www.youtube.com/watch?v=BwhhAjOPR24" target="_blank" rel="noopener">Watch Trailer on YouTube</a>
+    </div>
+    <p style="text-align:center; margin-top:1.25rem; color:var(--muted); font-size:0.95rem;">
+      Full sessions require a RightNow Media subscription or church access. The free study guide is included with the series.
+    </p>
+  </section>
+</div>
+
+<footer>
+  <p>Companion study prepared for Bible study • Based on the public description of Dr. Tony Evans’ series<br>
+  “This is more than a strange book of symbols—it is a call to worship God and live faithfully in the present.”</p>
+  <p style="margin-top:0.75rem;">Scripture is the foundation. Always return to the text of Revelation itself.</p>
+</footer>
+
+<script>
+const sessions = [
+  {
+    num: 1,
+    title: "The Unveiling of Jesus Christ",
+    scripture: "Revelation 1",
+    points: [
+      "The book is the revelation (unveiling) of Jesus Christ—His second coming and the things that must soon take place.",
+      "Blessed is the one who reads, hears, and keeps the words of this prophecy (Rev 1:3).",
+      "John’s vision of the glorified Christ among the lampstands: the Alpha and Omega, the First and the Last.",
+      "Outline of the book: the things you have seen, the things which are, and the things which will take place after these things (Rev 1:19)."
+    ],
+    questions: [
+      "What does it mean that this book is first and foremost a revelation of Jesus Christ rather than a puzzle to decode?",
+      "How does the promise of blessing (read, hear, keep) change the way you approach Revelation?",
+      "When you consider the question from the trailer—“Who are you worshiping?”—how does the vision of Christ in chapter 1 answer it?"
+    ],
+    application: "Begin the study by fixing your eyes on the glorified Christ. Let the vision of who He is shape how you live today."
+  },
+  {
+    num: 2,
+    title: "Messages to the Churches, Part 1",
+    scripture: "Revelation 2:1–29",
+    points: [
+      "Jesus addresses Ephesus, Smyrna, Pergamum, and Thyatira with specific commendations and corrections.",
+      "The letters reveal the challenges and strengths of the church age while calling believers to overcome.",
+      "Each letter ends with a promise to the one who overcomes and a call to hear what the Spirit says to the churches."
+    ],
+    questions: [
+      "Which of these four churches most resembles the challenges you or your church face right now?",
+      "What does “overcoming” look like in everyday faithfulness rather than dramatic heroism?",
+      "How do these messages call you to live in the present while anticipating what is to come?"
+    ],
+    application: "Hear what the Spirit is saying to your own life and community. Return to first love where it has cooled."
+  },
+  {
+    num: 3,
+    title: "Messages to the Churches, Part 2",
+    scripture: "Revelation 3:1–22",
+    points: [
+      "Sardis, Philadelphia, and Laodicea complete the seven letters—representing the full range of church conditions.",
+      "Jesus walks among the lampstands; He knows the true state of each church.",
+      "The call is to be faithful, hold fast, and open the door to the One who stands and knocks."
+    ],
+    questions: [
+      "Where do you see the danger of a reputation without reality (Sardis) or lukewarmness (Laodicea) in your own walk?",
+      "What does it look like to “hold fast” to what you have so that no one takes your crown?",
+      "How does knowing Jesus walks among His churches encourage faithful living right now?"
+    ],
+    application: "Respond to the specific word Jesus speaks to your situation. Live as an overcomer in the present age."
+  },
+  {
+    num: 4,
+    title: "The Throne Room of Heaven",
+    scripture: "Revelation 4",
+    points: [
+      "John is invited to “come up here” and sees the throne of God in heaven.",
+      "Continuous worship surrounds the throne: “Holy, holy, holy is the Lord God Almighty.”",
+      "The scene shifts the perspective from earthly struggles to heavenly reality and sovereignty."
+    ],
+    questions: [
+      "How does a vision of the throne change the way you view present troubles and future events?",
+      "What does true worship look like when it is centered on who God is rather than what we feel?",
+      "How does this chapter answer the question of who is worthy of worship?"
+    ],
+    application: "Practice throne-room worship this week. Let the reality of God’s sovereignty steady your heart."
+  },
+  {
+    num: 5,
+    title: "The Worthy Lamb",
+    scripture: "Revelation 5",
+    points: [
+      "Only the Lion of the tribe of Judah, the Lamb who was slain, is worthy to open the scroll.",
+      "The Lamb’s worthiness comes from His redemption: “You were slain, and with your blood you purchased people for God.”",
+      "All of heaven and creation join in worship of the Lamb."
+    ],
+    questions: [
+      "Why is it significant that the only one worthy is the Lamb who was slain?",
+      "How does the Lamb’s victory over sin and death give confidence for the future judgments that follow?",
+      "In what ways does your daily life reflect that you believe Jesus alone is worthy?"
+    ],
+    application: "Center your worship and your hope on the worthy Lamb. Let His victory shape how you face the future."
+  },
+  {
+    num: 6,
+    title: "The Seals and the Sealed",
+    scripture: "Revelation 6–7",
+    points: [
+      "The opening of the seals begins the series of judgments that unfold God’s plan.",
+      "The 144,000 are sealed, and a great multitude from every nation stands before the throne in white robes.",
+      "God protects His people while executing judgment on the earth."
+    ],
+    questions: [
+      "How does the sealing of God’s people contrast with the judgments that fall on the earth?",
+      "What comfort do you find in the vision of the great multitude who have come out of the great tribulation?",
+      "How should the reality of coming judgment motivate faithful living and witness today?"
+    ],
+    application: "Trust that God knows and seals those who are His. Live as one who belongs to the Lamb."
+  },
+  {
+    num: 7,
+    title: "Trumpets, Witnesses, and the Kingdom",
+    scripture: "Revelation 8–11",
+    points: [
+      "The trumpet judgments intensify God’s response to unrepentant humanity.",
+      "The two witnesses testify with power; their death and resurrection point to God’s ultimate victory.",
+      "The seventh trumpet announces that “the kingdom of the world has become the kingdom of our Lord and of his Christ.”"
+    ],
+    questions: [
+      "What role does faithful witness play even in the midst of intense opposition?",
+      "How does the announcement of the kingdom in chapter 11 reframe the judgments that precede it?",
+      "Where is God calling you to be a faithful witness right now?"
+    ],
+    application: "Speak and live as a witness to the coming King. The kingdom is already advancing."
+  },
+  {
+    num: 8,
+    title: "Conflict, Characters, and Endurance",
+    scripture: "Revelation 12–14",
+    points: [
+      "The woman, the dragon, the beast, and the false prophet reveal the spiritual conflict behind earthly events.",
+      "The call to endurance and faithfulness for the saints is repeated.",
+      "The 144,000 and the harvest visions point to both protection and final judgment."
+    ],
+    questions: [
+      "How does seeing the spiritual powers behind human systems change the way you engage the world?",
+      "What does patient endurance look like when pressure to compromise is high?",
+      "How does the Lamb’s victory over the dragon give you courage for present battles?"
+    ],
+    application: "Stand firm in allegiance to the Lamb. Refuse to worship any other."
+  },
+  {
+    num: 9,
+    title: "Bowls, Babylon, and the Return",
+    scripture: "Revelation 15–19",
+    points: [
+      "The bowl judgments complete the wrath of God.",
+      "Babylon the Great falls—the world system that opposed God and persecuted His people.",
+      "Christ returns as King of kings and Lord of lords; the marriage supper of the Lamb is celebrated."
+    ],
+    questions: [
+      "What modern “Babylons” compete for your loyalty and worship?",
+      "How does the certainty of Christ’s return affect the way you live, work, and love today?",
+      "What does it mean to you that the Lamb’s wedding feast is already being prepared?"
+    ],
+    application: "Live as one who is invited to the marriage supper. Keep your garments clean and your hope fixed on His return."
+  },
+  {
+    num: 10,
+    title: "The New Creation and Faithful Living",
+    scripture: "Revelation 20–22",
+    points: [
+      "Satan is bound, the millennium unfolds, and the final judgment occurs at the great white throne.",
+      "A new heaven and new earth appear; the New Jerusalem descends; God dwells with His people.",
+      "The book ends with the invitation: “The Spirit and the Bride say, ‘Come.’” and a final call to worship and keep the words of this prophecy."
+    ],
+    questions: [
+      "How does the vision of the New Jerusalem and the absence of tears, death, and pain reshape your present priorities?",
+      "What does “living in light of things to come” look like in your relationships, work, and daily choices this week?",
+      "How will you respond to the final invitation of the book to come and to worship the One who is coming soon?"
+    ],
+    application: "Because the end is certain and glorious, live faithfully and worshipfully in the present. The One who testifies to these things says, “Yes, I am coming soon.” Amen. Come, Lord Jesus."
+  }
+];
+
+const container = document.getElementById('sessions');
+sessions.forEach(s => {
+  const el = document.createElement('div');
+  el.className = 'session';
+  el.innerHTML = `
+    <div class="session-header" onclick="this.parentElement.classList.toggle('open')">
+      <h3><span class="session-num">Session ${s.num}:</span> ${s.title}</h3>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="session-body">
+      <div class="scripture">${s.scripture}</div>
+      <ul>${s.points.map(p => `<li>${p}</li>`).join('')}</ul>
+      <div class="questions"><strong>Discussion & Reflection</strong>
+        <ul>${s.questions.map(q => `<li>${q}</li>`).join('')}</ul>
+      </div>
+      <div class="application"><strong>Application:</strong> ${s.application}</div>
+    </div>
+  `;
+  container.appendChild(el);
+});
+</script>
+</body>
+</html>
