@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meridian — Ship the work. Leave the maze.</title>
+  <meta name="description" content="Meridian is a delivery workspace for issues, sprints, and owners. See the blocker, commit only what fits, and share a release without living in the tracker.">
+  <meta name="theme-color" content="#f3f1ec">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600&family=Instrument+Serif:ital@0;1&display=swap">
+  <style>
+    :root {
+      --paper: #f3f1ec; --paper-2: #e6e2d9; --paper-dim: #d4cfc4; --card: #faf9f6;
+      --ink: #1a1916; --muted: #4f4a44; --faint: #6f695f; --line: #d8d3c8;
+      --spruce: #1e4d45; --spruce-deep: #163b35; --spruce-line: #3e6d64; --mist: #d7e6e2; --block: #8c3a32;
+      --control: 0.75rem; --frame: 1.75rem; --panel: 2.25rem;
+      --sans: "Instrument Sans", "Avenir Next", "Segoe UI", sans-serif;
+      --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--paper); color: var(--ink); }
+    body { margin: 0; font-family: var(--sans); font-size: 1rem; line-height: 1.5; background: var(--paper); color: var(--ink); -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { text-wrap: balance; font-weight: 400; }
+    p { text-wrap: pretty; }
+    a { color: inherit; }
+    button, [role="button"] { cursor: pointer; font-family: inherit; }
+    section[id] { scroll-margin-top: 5.25rem; }
+    ::selection { background: var(--spruce); color: var(--paper); }
+    .wrap { width: min(72rem, calc(100% - 2.5rem)); margin-inline: auto; }
+    .kicker { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--spruce); margin: 0; }
+    .display { font-family: var(--display); font-size: clamp(2.7rem, 1.15rem + 5.4vw, 5.35rem); line-height: 0.96; letter-spacing: -0.03em; margin: 1rem 0 0; }
+    .section-title { font-family: var(--display); font-size: clamp(2rem, 1.15rem + 2.5vw, 3.35rem); line-height: 1.05; letter-spacing: -0.03em; margin: 0; }
+    .price { font-family: var(--display); font-size: clamp(2.75rem, 2rem + 1.2vw, 3.5rem); line-height: 0.95; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3rem; padding-inline: 1.25rem; border-radius: var(--control); border: 1px solid transparent; font-size: 0.9375rem; font-weight: 500; text-decoration: none; background: transparent; color: var(--ink); }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary { background: var(--spruce); color: var(--paper); }
+    .btn-primary:hover { background: var(--spruce-deep); }
+    .btn-secondary { border-color: var(--line); }
+    .btn-secondary:hover { border-color: var(--ink); }
+    .btn-paper { background: var(--paper); color: var(--ink); }
+    .btn-full { width: 100%; }
+    .field { height: 3rem; width: 100%; border-radius: var(--control); border: 1px solid var(--line); background: var(--card); padding-inline: 0.875rem; color: var(--ink); font-size: 1rem; font-family: inherit; }
+    .field:focus-visible, .btn:focus-visible, a:focus-visible { outline: 2px solid var(--spruce); outline-offset: 2px; }
+    header.bar { position: sticky; top: 0; z-index: 40; border-bottom: 1px solid var(--line); background: var(--paper); padding-top: env(safe-area-inset-top); }
+    .bar-row { height: 4rem; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+    .brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .brand span { font-family: var(--display); font-size: 1.5rem; line-height: 1; }
+    .mark { width: 2rem; height: 2rem; color: var(--spruce); }
+    nav.desktop { display: none; gap: 0.25rem; }
+    nav.desktop a { min-height: 2.75rem; display: inline-flex; align-items: center; padding-inline: 0.75rem; text-decoration: none; color: var(--muted); font-size: 0.875rem; }
+    nav.desktop a:hover { color: var(--ink); }
+    .menu-btn { width: 2.75rem; height: 2.75rem; border-radius: var(--control); border: 1px solid var(--line); background: transparent; color: var(--ink); }
+    #mobile-nav { display: none; border-top: 1px solid var(--line); padding: 0.5rem 0 0.75rem; }
+    #mobile-nav.open { display: block; }
+    #mobile-nav a { display: flex; align-items: center; min-height: 2.75rem; text-decoration: none; }
+    .lead { max-width: 40rem; color: var(--muted); font-size: 1.125rem; }
+    .hero-actions, .promises { display: flex; flex-direction: column; gap: 0.75rem; }
+    .promises { margin: 2rem 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 0.875rem; }
+    .frame { border: 1px solid var(--line); border-radius: var(--frame); background: var(--card); overflow: hidden; box-shadow: 0 1px 0 color-mix(in oklab, var(--ink) 5%, transparent), 0 28px 50px -36px color-mix(in oklab, var(--ink) 45%, transparent); }
+    .frame-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; border-bottom: 1px solid var(--line); padding: 0.75rem 1rem; }
+    .dots { display: flex; gap: 0.375rem; }
+    .dots i { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--line); display: block; }
+    .meta { margin: 0; font-size: 0.875rem; color: var(--muted); }
+    .tabs { display: flex; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); padding: 0.25rem; }
+    .tabs button { min-height: 2.75rem; border: 0; border-radius: 999px; background: transparent; color: var(--muted); padding: 0 0.75rem; font-weight: 500; }
+    .tabs button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+    .board { display: flex; gap: 0.75rem; overflow-x: auto; padding: 1rem; scroll-snap-type: x mandatory; }
+    .col { width: 80%; flex: 0 0 auto; scroll-snap-align: start; background: var(--paper); border-radius: var(--control); padding: 0.75rem; }
+    .col h3 { margin: 0; font-family: var(--sans); font-size: 0.875rem; font-weight: 500; }
+    .col header { display: flex; justify-content: space-between; margin-bottom: 0.75rem; }
+    .card { border: 1px solid var(--line); background: var(--card); border-radius: var(--control); padding: 0.75rem; margin-top: 0.5rem; }
+    .card p { margin: 0.5rem 0 0; font-size: 0.875rem; font-weight: 500; }
+    .tag { margin: 0.75rem 0 0; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: var(--muted); font-weight: 400; }
+    .dot { width: 0.375rem; height: 0.375rem; border-radius: 999px; background: var(--faint); }
+    .dot.active { background: var(--spruce); }
+    .dot.blocked { background: var(--block); }
+    .owner { width: 1.75rem; height: 1.75rem; border-radius: 999px; border: 1px solid var(--line); display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; }
+    .row-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted); }
+    .list { list-style: none; margin: 0; padding: 0; }
+    .list li { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-top: 1px solid var(--line); }
+    .list li:first-child { border-top: 0; }
+    .key { width: 4.5rem; flex: 0 0 auto; font-size: 0.75rem; color: var(--muted); }
+    .title { flex: 1; font-size: 0.875rem; font-weight: 500; }
+    .state, .tagline { display: none; }
+    .swipe { margin: 0; padding: 0 1rem 1rem; font-size: 0.875rem; color: var(--muted); }
+    .timeline { padding: 1rem; }
+    .track { height: 0.5rem; border-radius: 999px; background: var(--paper-2); margin-top: 0.5rem; }
+    .fill { height: 0.5rem; border-radius: 999px; background: var(--spruce); }
+    .fill.blocked { background: var(--block); }
+    .band { border-block: 1px solid var(--line); }
+    .facts { list-style: none; margin: 0; padding: 2rem 0; display: grid; gap: 1rem; }
+    .facts li { font-size: 0.875rem; font-weight: 500; }
+    .steps { list-style: none; margin: 2.5rem 0 0; padding: 0; display: grid; gap: 2rem; }
+    .num { font-family: var(--display); font-size: 1.875rem; color: var(--spruce); margin: 0; }
+    .grid-3, .grid-features { display: grid; gap: 1rem; }
+    .feature { border: 1px solid var(--line); background: var(--card); border-radius: var(--frame); padding: 1.25rem; }
+    .feature h3, .step h3 { font-family: var(--sans); font-weight: 500; font-size: 1.125rem; margin: 1rem 0 0; }
+    .feature p, .step p { color: var(--muted); margin: 0.5rem 0 0; font-size: 0.875rem; }
+    .quiet { border-radius: var(--panel); background: var(--ink); color: var(--paper); padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .quiet p { color: var(--paper-dim); margin: 0.75rem 0 0; }
+    .billing { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+    .seg { display: flex; border-radius: 999px; border: 1px solid var(--line); background: var(--card); padding: 0.25rem; }
+    .seg button { min-height: 2.75rem; border: 0; border-radius: 999px; background: transparent; color: var(--muted); padding: 0 1rem; font-weight: 500; }
+    .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+    .plans { list-style: none; margin: 2.5rem 0 0; padding: 0; display: grid; gap: 1rem; }
+    .plan { border-radius: var(--panel); padding: 1.5rem; border: 1px solid var(--line); background: var(--card); display: flex; flex-direction: column; }
+    .plan.featured { background: var(--spruce); color: var(--paper); border-color: var(--spruce-line); }
+    .plan h3 { font-family: var(--sans); font-weight: 500; font-size: 1.125rem; margin: 0; }
+    .plan .blurb { font-size: 0.875rem; color: var(--muted); }
+    .plan.featured .blurb, .plan.featured .per, .plan.featured .strike, .plan.featured .eight { color: var(--mist); }
+    .badge { border-radius: 999px; background: var(--paper); color: var(--ink); font-size: 0.75rem; font-weight: 500; padding: 0.25rem 0.75rem; }
+    .headrow { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+    .amount { display: flex; align-items: flex-end; gap: 0.5rem; margin: 1.5rem 0 0; }
+    .per, .strike { font-size: 0.875rem; margin-bottom: 0.25rem; }
+    .strike { text-decoration: line-through; color: var(--faint); }
+    .points { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 0.75rem; flex: 1; }
+    .points li { display: flex; gap: 0.5rem; font-size: 0.875rem; }
+    .check { color: var(--spruce); }
+    .plan.featured .check { color: var(--paper); }
+    .plan .btn { margin-top: 2rem; }
+    .eight { text-align: center; font-size: 0.875rem; font-variant-numeric: tabular-nums; margin: 0.75rem 0 0; }
+    .stories { background: var(--card); border-top: 1px solid var(--line); }
+    .quote { font-family: var(--display); font-size: 1.5rem; line-height: 1.3; margin: 0; }
+    .who { margin-top: 1.5rem; font-size: 0.875rem; }
+    .who span { display: block; color: var(--muted); }
+    .signup { display: grid; gap: 2.5rem; }
+    .panel { border: 1px solid var(--line); background: var(--card); border-radius: var(--panel); padding: 1.5rem; }
+    label { font-size: 0.875rem; font-weight: 500; }
+    .stack { display: grid; gap: 0.5rem; }
+    form { display: grid; gap: 1rem; }
+    .error { color: var(--block); font-size: 0.875rem; margin: 0; }
+    .fine { font-size: 0.75rem; color: var(--muted); margin: 0; }
+    footer { border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .foot { display: flex; flex-direction: column; gap: 2rem; padding: 2.5rem 0; }
+    .foot nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 2.5rem; font-size: 0.875rem; }
+    .foot nav a { color: var(--muted); text-decoration: none; min-height: 2.75rem; display: flex; align-items: center; }
+    .copy { font-size: 0.75rem; color: var(--faint); padding-bottom: 2rem; }
+    .hidden { display: none !important; }
+    .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+    @media (min-width: 640px) {
+      .hero-actions, .promises { flex-direction: row; align-items: center; }
+      .promises { gap: 1.5rem; }
+      .start-long { display: inline; }
+      .start-short { display: none; }
+    }
+    @media (max-width: 639px) {
+      .start-long { display: none; }
+      .menu-btn { display: inline-flex; align-items: center; justify-content: center; }
+    }
+    @media (min-width: 768px) {
+      .wrap { width: min(72rem, calc(100% - 4rem)); }
+      nav.desktop { display: flex; }
+      .menu-btn, #mobile-nav { display: none !important; }
+      .board { display: grid; grid-template-columns: repeat(3, 1fr); overflow: visible; }
+      .col { width: auto; }
+      .swipe { display: none; }
+      .state, .tagline { display: flex; width: 7rem; font-size: 0.875rem; color: var(--muted); align-items: center; gap: 0.5rem; }
+      .state { width: 4rem; }
+      .facts, .steps, .grid-features, .plans { grid-template-columns: repeat(3, 1fr); }
+      .quiet { flex-direction: row; align-items: center; justify-content: space-between; }
+      .foot { flex-direction: row; justify-content: space-between; }
+      .foot nav a { min-height: 0; }
+    }
+    @media (min-width: 1024px) {
+      .signup { grid-template-columns: 1.1fr 0.9fr; align-items: start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn:active { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr" href="#main">Skip to content</a>
+  <header class="bar">
+    <div class="wrap bar-row">
+      <a class="brand" href="#top"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16 5.2c3.2 2.8 5 6.4 5 10.8s-1.8 8-5 10.8M5.2 16h21.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Meridian</span></a>
+      <nav class="desktop" aria-label="Primary">
+        <a href="#product">Product</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#stories">Stories</a>
+      </nav>
+      <div style="display:flex;gap:0.5rem;align-items:center">
+        <a class="btn btn-primary" href="#start" style="padding-inline:0.75rem"><span class="start-short">Start</span><span class="start-long">Start free</span></a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav"><span class="sr">Open menu</span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      </div>
+    </div>
+    <nav id="mobile-nav" class="wrap" aria-label="Mobile">
+      <a href="#product">Product</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#stories">Stories</a>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="wrap" id="top" style="padding:3rem 0 2rem">
+      <p class="kicker">Delivery workspace</p>
+      <h1 class="display">Ship the work.<span style="display:block;font-style:italic;color:var(--spruce)">Leave the maze.</span></h1>
+      <p class="lead">Meridian keeps issues, sprints, and owners on one calm board. See the blocker, commit only what fits, and share a release link — without living inside the tracker.</p>
+      <div class="hero-actions" style="margin-top:2rem">
+        <a class="btn btn-primary" href="#start">Start free</a>
+        <a class="btn btn-secondary" href="#product">See the board</a>
+      </div>
+      <ul class="promises"><li>Free for three people</li><li>Set up in an afternoon</li><li>Export whenever you leave</li></ul>
+    </section>
+    <section class="wrap" id="product" style="padding-bottom:4rem">
+      <div class="frame">
+        <div class="frame-bar">
+          <div style="display:flex;align-items:center;gap:0.75rem">
+            <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+            <p class="meta">Sprint 24 <span style="color:var(--faint)"> / </span> 6 issues <span style="color:var(--faint)"> / </span> <span style="color:var(--block)">1 blocked</span></p>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Product views">
+            <button type="button" role="tab" data-view="board" aria-selected="true">Board</button>
+            <button type="button" role="tab" data-view="list" aria-selected="false">List</button>
+            <button type="button" role="tab" data-view="timeline" aria-selected="false">Timeline</button>
+          </div>
+        </div>
+        <div id="view"></div>
+      </div>
+    </section>
+    <section class="band" aria-label="How the board works">
+      <ul class="wrap facts">
+        <li>Keys, owners, and states stay familiar</li>
+        <li>Capacity shows before you commit</li>
+        <li>A release link, not another meeting</li>
+      </ul>
+    </section>
+    <section class="wrap" style="padding:4rem 0">
+      <h2 class="section-title" style="max-width:36rem">What changes in the first week</h2>
+      <ol class="steps">
+        <li class="step"><p class="num">01</p><h3>The blocker is visible</h3><p>Age, owner, and the dependency sit on the card. Nothing important waits in a thread.</p></li>
+        <li class="step"><p class="num">02</p><h3>The sprint has an edge</h3><p>You see capacity before you promise it. Overflow stays in view, not in a hidden pile.</p></li>
+        <li class="step"><p class="num">03</p><h3>The release has a door</h3><p>A read-only link replaces the status meeting. People who need to know can look.</p></li>
+      </ol>
+    </section>
+    <section id="features" style="border-top:1px solid var(--line)">
+      <div class="wrap" style="padding:4rem 0">
+        <h2 class="section-title" style="max-width:36rem">Built for the week you actually have</h2>
+        <p class="lead">The habits stay familiar: keys, owners, states. The noise does not. Meridian is the board your team can read without a tour.</p>
+        <ul class="grid-features" style="list-style:none;margin:2.5rem 0 0;padding:0">
+          <li class="feature"><h3>One model, three views</h3><p>List, board, and timeline read the same issues. A state change shows up everywhere.</p></li>
+          <li class="feature"><h3>Sprints with an edge</h3><p>Capacity is visible before you commit. Overflow stays on the board.</p></li>
+          <li class="feature"><h3>Blockers in the open</h3><p>Age, owner, and the dependency sit on the card. A blocked issue cannot wait quietly.</p></li>
+          <li class="feature"><h3>Quiet by default</h3><p>Notifications batch. Mentions are explicit. Everything else waits until someone asks.</p></li>
+          <li class="feature"><h3>A door for stakeholders</h3><p>Share a read-only release view. No seat required to see what is shipping.</p></li>
+          <li class="feature"><h3>Fast enough to live in</h3><p>Keyboard first. Search that keeps up. The tracker stays out of the way.</p></li>
+        </ul>
+      </div>
+    </section>
+    <section class="wrap" style="padding-bottom:1rem">
+      <div class="quiet">
+        <div style="max-width:36rem"><h2 class="section-title">The next sprint can be quieter.</h2><p>Three people. One board. Free until the seats need to grow.</p></div>
+        <a class="btn btn-paper" href="#start">Start free</a>
+      </div>
+    </section>
+    <section id="pricing" class="wrap" style="padding:4rem 0">
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        <div>
+          <h2 class="section-title">Simple seats. No ceremony.</h2>
+          <p class="lead">Start with three people. Move up when the board is how the team works. Change or cancel any month.</p>
+        </div>
+        <div class="billing">
+          <div class="seg" role="group" aria-label="Billing period">
+            <button type="button" id="monthly" aria-pressed="false">Monthly</button>
+            <button type="button" id="yearly" aria-pressed="true">Yearly</button>
+          </div>
+          <p style="margin:0;font-size:0.875rem;color:var(--muted)">Two months free on yearly</p>
+        </div>
+      </div>
+      <ul class="plans" id="plans"></ul>
+    </section>
+    <section id="stories" class="stories">
+      <div class="wrap" style="padding:4rem 0">
+        <h2 class="section-title" style="max-width:40rem">Teams who stopped negotiating with the tracker</h2>
+        <ul class="grid-features" style="list-style:none;margin:2.5rem 0 0;padding:0">
+          <li class="feature" style="background:var(--paper)"><blockquote class="quote">“We stopped keeping a second spreadsheet beside the tracker. Meridian is the board and the plan.”</blockquote><p class="who"><strong>Priya Shah</strong><span>Head of Product, Fieldnote</span></p></li>
+          <li class="feature" style="background:var(--paper)"><blockquote class="quote">“Stakeholders open the release view now. They stopped asking for a status write-up in chat.”</blockquote><p class="who"><strong>Jonah Ell</strong><span>Engineering Manager, Northglass</span></p></li>
+          <li class="feature" style="background:var(--paper)"><blockquote class="quote">“I can find a blocked issue in one keystroke. That used to be a meeting.”</blockquote><p class="who"><strong>Adele Cho</strong><span>Delivery Lead, Halden Ops</span></p></li>
+        </ul>
+      </div>
+    </section>
+    <section id="start" class="wrap" style="padding:4rem 0">
+      <div class="signup">
+        <div>
+          <h2 class="section-title">Put the next sprint on Meridian.</h2>
+          <p class="lead">Tell us where to send the workspace. The free plan covers three people — enough to see if the board earns its place.</p>
+          <ul style="list-style:none;padding:0;margin:2rem 0 0;display:grid;gap:0.75rem;font-size:0.875rem">
+            <li>No seat minimum</li><li>Cancel any month</li><li>Your issues stay exportable</li>
+          </ul>
+        </div>
+        <div class="panel" id="form-panel"></div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap foot">
+      <div>
+        <a class="brand" href="#top"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16 5.2c3.2 2.8 5 6.4 5 10.8s-1.8 8-5 10.8M5.2 16h21.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><span>Meridian</span></a>
+        <p style="color:var(--muted);font-size:0.875rem;max-width:16rem">A quieter way to run delivery.</p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="#product">Product</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#stories">Stories</a><a href="#start">Start free</a>
+      </nav>
+    </div>
+    <p class="wrap copy">© 2026 Meridian Labs · USS-NIMITZ-FURY</p>
+  </footer>
+  <script>
+    const issues = [
+      { key: "MER-214", title: "Release notes for 1.4", state: "Now", tag: "Writing", tone: "active", owner: "PS", span: 80 },
+      { key: "MER-208", title: "Guest links expire after ship", state: "Now", tag: "Blocked", tone: "blocked", owner: "JE", span: 40 },
+      { key: "MER-201", title: "Capacity on the sprint board", state: "Now", tag: "Building", tone: "active", owner: "AC", span: 60 },
+      { key: "MER-196", title: "Quiet notification rules", state: "Next", tag: "Design", tone: "quiet", owner: "PS", span: 50 },
+      { key: "MER-188", title: "Audit log export", state: "Next", tag: "Spec", tone: "quiet", owner: "MK", span: 33 },
+      { key: "MER-174", title: "Timeline shares the same issues", state: "Later", tag: "Planned", tone: "quiet", owner: "AC", span: 66 }
+    ];
+    const plans = [
+      { id: "starter", name: "Starter", monthly: 0, yearly: 0, blurb: "Three people, one board, enough to know if it fits.", cta: "Start free", points: ["Up to 3 people", "One active board", "30-day history", "Read-only release link"] },
+      { id: "team", name: "Team", monthly: 12, yearly: 10, blurb: "The plan most delivery teams stay on.", cta: "Choose Team", points: ["Unlimited boards", "Sprints and timeline", "Guest links", "One year of history"] },
+      { id: "scale", name: "Scale", monthly: 28, yearly: 22, blurb: "For orgs that need a record of every change.", cta: "Choose Scale", points: ["SSO-ready workspace", "Audit log", "Unlimited history", "Priority support"] }
+    ];
+    let yearly = true;
+    let plan = "team";
+    const viewEl = document.getElementById("view");
+    function esc(s) {
+      return s.replace(/[&<>"']/g, function (c) {
+        return { "&": "\u0026amp;", "<": "\u0026lt;", ">": "\u0026gt;", '"': "\u0026quot;", "'": "\u0026#39;" }[c];
+      });
+    }
+    function renderBoard() {
+      const cols = ["Now", "Next", "Later"].map(name => {
+        const cards = issues.filter(i => i.state === name).map(i =>
+          `<article class="card"><div class="row-top"><span>${i.key}</span><span class="owner">${i.owner}</span></div><p>${esc(i.title)}</p><p class="tag"><span class="dot ${i.tone}"></span>${i.tag}</p></article>`
+        ).join("");
+        return `<section class="col" aria-label="${name}"><header><h3>${name}</h3><span>${issues.filter(i => i.state === name).length}</span></header>${cards}</section>`;
+      }).join("");
+      viewEl.innerHTML = `<div class="board">${cols}</div><p class="swipe">Swipe to see Next and Later.</p>`;
+    }
+    function renderList() {
+      viewEl.innerHTML = `<ul class="list">${issues.map(i => `<li><span class="key">${i.key}</span><span class="title">${esc(i.title)}</span><span class="tagline"><span class="dot ${i.tone}"></span>${i.tag}</span><span class="state">${i.state}</span><span class="owner">${i.owner}</span></li>`).join("")}</ul>`;
+    }
+    function renderTimeline() {
+      viewEl.innerHTML = `<div class="timeline"><p style="display:flex;justify-content:space-between;margin:0 0 1rem"><strong>Sprint 24 · Nov 9–20</strong><span style="color:var(--muted)">Same issues. No second list.</span></p>${issues.filter(i => i.state !== "Later").map(i => `<div style="margin-top:1rem"><div style="display:flex;justify-content:space-between;gap:0.75rem"><span style="font-weight:500">${esc(i.title)}</span><span style="color:var(--muted);font-size:0.75rem">${i.key}</span></div><div class="track"><div class="fill ${i.tone}" style="width:${i.span}%"></div></div></div>`).join("")}</div>`;
+    }
+    const views = { board: renderBoard, list: renderList, timeline: renderTimeline };
+    document.querySelectorAll("[data-view]").forEach(btn => btn.addEventListener("click", () => {
+      document.querySelectorAll("[data-view]").forEach(b => b.setAttribute("aria-selected", b === btn ? "true" : "false"));
+      views[btn.dataset.view]();
+    }));
+    renderBoard();
+    function money(n) { return "$" + n; }
+    function renderPlans() {
+      document.getElementById("plans").innerHTML = plans.map(item => {
+        const price = yearly ? item.yearly : item.monthly;
+        const featured = item.id === "team";
+        const strike = yearly && item.monthly > 0 ? `<span class="strike">${money(item.monthly)}</span>` : "";
+        const eight = featured ? `<p class="eight">Eight people is ${money((yearly ? 10 : 12) * 8)} a month</p>` : "";
+        return `<li class="plan${featured ? " featured" : ""}"><div class="headrow"><h3>${item.name}</h3>${featured ? `<span class="badge">Most teams</span>` : ""}</div><p class="blurb">${item.blurb}</p><p class="amount">${strike}<span class="price">${money(price)}</span><span class="per">${price === 0 ? "forever" : "/ seat / month"}</span></p><ul class="points">${item.points.map(p => `<li><span class="check" aria-hidden="true">✓</span><span>${p}</span></li>`).join("")}</ul><a class="btn btn-full ${featured ? "btn-paper" : "btn-primary"}" href="#start" data-plan="${item.id}">${item.cta}</a>${eight}</li>`;
+      }).join("");
+      document.querySelectorAll("[data-plan]").forEach(a => a.addEventListener("click", () => { plan = a.dataset.plan; renderForm(); }));
+    }
+    document.getElementById("monthly").addEventListener("click", () => { yearly = false; syncBill(); });
+    document.getElementById("yearly").addEventListener("click", () => { yearly = true; syncBill(); });
+    function syncBill() {
+      document.getElementById("monthly").setAttribute("aria-pressed", yearly ? "false" : "true");
+      document.getElementById("yearly").setAttribute("aria-pressed", yearly ? "true" : "false");
+      renderPlans();
+      renderForm();
+    }
+    function loadSignup() {
+      try { const raw = localStorage.getItem("meridian.signup"); return raw ? JSON.parse(raw) : null; } catch { return null; }
+    }
+    function renderForm() {
+      const saved = loadSignup();
+      const panel = document.getElementById("form-panel");
+      if (saved && saved.email) {
+        panel.innerHTML = `<div role="status"><h3 class="section-title" style="font-size:2rem">Workspace reserved</h3><p class="lead">We’ll use ${esc(saved.email)} for the ${esc(saved.plan)} plan. This confirmation stays on this device.</p><button class="btn btn-secondary" type="button" id="reset" style="margin-top:1rem">Use a different email</button></div>`;
+        document.getElementById("reset").addEventListener("click", () => { localStorage.removeItem("meridian.signup"); renderForm(); });
+        return;
+      }
+      const rate = (id) => { const p = plans.find(x => x.id === id); return yearly ? p.yearly : p.monthly; };
+      panel.innerHTML = `<form id="signup" novalidate><div class="stack"><label for="email">Work email</label><input class="field" id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com"></div><div class="stack"><label for="plan">Plan</label><select class="field" id="plan" name="plan"><option value="starter">Starter — free</option><option value="team">Team — ${money(rate("team"))}/seat</option><option value="scale">Scale — ${money(rate("scale"))}/seat</option></select></div><p class="error" id="err" hidden></p><button class="btn btn-primary" type="submit">Create my workspace</button><p class="fine">This preview saves your request on this device only. No account is created.</p></form>`;
+      document.getElementById("plan").value = plan;
+      document.getElementById("plan").addEventListener("change", e => { plan = e.target.value; });
+      document.getElementById("signup").addEventListener("submit", e => {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const err = document.getElementById("err");
+        if (!email) { err.hidden = false; err.textContent = "Enter your work email."; return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.hidden = false; err.textContent = "That email doesn’t look complete."; return; }
+        localStorage.setItem("meridian.signup", JSON.stringify({ email, plan }));
+        renderForm();
+      });
+    }
+    const menu = document.querySelector(".menu-btn");
+    const mobile = document.getElementById("mobile-nav");
+    menu.addEventListener("click", () => {
+      const open = mobile.classList.toggle("open");
+      menu.setAttribute("aria-expanded", open ? "true" : "false");
+      menu.querySelector(".sr").textContent = open ? "Close menu" : "Open menu";
+    });
+    mobile.querySelectorAll("a").forEach(a => a.addEventListener("click", () => { mobile.classList.remove("open"); menu.setAttribute("aria-expanded", "false"); }));
+    renderPlans();
+    renderForm();
+  </script>
+</body>
+</html>
