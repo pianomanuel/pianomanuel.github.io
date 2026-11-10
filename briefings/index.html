@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Briefings — pianomanuel</title>
+  <meta name="description" content="MP3 backup copies mirrored beside the landing page. Private listen is not on this page.">
+  <meta name="theme-color" content="#f3f1ec">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif&display=swap">
+  <style>
+    :root { --paper:#f3f1ec; --card:#faf9f6; --ink:#1a1916; --muted:#4f4a44; --line:#d8d3c8; --spruce:#1e4d45; --mist:#d7e6e2; }
+    * { box-sizing: border-box; }
+    html { background: var(--paper); color: var(--ink); }
+    body { margin: 0; font-family: "Instrument Sans", "Avenir Next", sans-serif; line-height: 1.5; background: var(--paper); }
+    a { color: inherit; }
+    header { position: sticky; top: 0; border-bottom: 1px solid var(--line); background: var(--paper); }
+    .bar { height: 3.5rem; max-width: 48rem; margin: 0 auto; padding: 0 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-family: "Instrument Serif", Georgia, serif; font-size: 1.5rem; text-decoration: none; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    h1 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; font-size: clamp(2.5rem, 8vw, 3.5rem); line-height: 0.95; letter-spacing: -0.03em; margin: 0.5rem 0 0; }
+    .kicker { margin: 0; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--spruce); }
+    .lead { color: var(--muted); max-width: 36rem; }
+    article { margin-top: 1rem; border: 1px solid var(--line); background: var(--card); border-radius: 1.75rem; padding: 1rem 1rem 1.1rem; }
+    article h2 { margin: 0; font-size: 1rem; font-weight: 500; }
+    article p { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.875rem; }
+    audio { width: 100%; margin-top: 0.75rem; }
+    .back { font-size: 0.875rem; font-weight: 500; text-decoration: none; min-height: 2.5rem; display: inline-flex; align-items: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <a class="brand" href="./">Briefings</a>
+      <a class="back" href="../">Meridian</a>
+    </div>
+  </header>
+  <main>
+    <p class="kicker">Mirror of the library</p>
+    <h1>Four copies. Nothing private.</h1>
+    <p class="lead">These are the same MP3s as the ship preview. Private listen stayed on Drive. Making a new briefing still happens on the preview, not on this static page.</p>
+    <article>
+      <h2>How to make the pianomanuel page</h2>
+      <p>Made here. The publish steps, spoken.</p>
+      <audio controls preload="none" src="audio/how-to-make-pianomanuel.mp3"></audio>
+    </article>
+    <article>
+      <h2>Board capture, Monday night</h2>
+      <p>Made here from the KAN board read.</p>
+      <audio controls preload="none" src="audio/board-capture.mp3"></audio>
+    </article>
+    <article>
+      <h2>Handoff is clear</h2>
+      <p>Made here. Two-way share and pigeon.</p>
+      <audio controls preload="none" src="audio/handoff-clear.mp3"></audio>
+    </article>
+    <article>
+      <h2>Nimitz Fury, episode 1 — Meet the crew</h2>
+      <p>Copied from Drive. The Drive file is still there.</p>
+      <audio controls preload="none" src="audio/nimitz-fury-ep1-meet-the-crew.mp3"></audio>
+    </article>
+  </main>
+</body>
+</html>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "how-pianomanuel",
+    "title": "How to make the pianomanuel page",
+    "src": "/audio/how-to-make-pianomanuel.mp3",
+    "note": "Made here. The publish steps, spoken."
+  },
+  {
+    "id": "board-capture",
+    "title": "Board capture, Monday night",
+    "src": "/audio/board-capture.mp3",
+    "note": "Made here from the KAN board read."
+  },
+  {
+    "id": "handoff-clear",
+    "title": "Handoff is clear",
+    "src": "/audio/handoff-clear.mp3",
+    "note": "Made here. Two-way share and pigeon."
+  },
+  {
+    "id": "meet-the-crew",
+    "title": "Nimitz Fury, episode 1 — Meet the crew",
+    "src": "/audio/nimitz-fury-ep1-meet-the-crew.mp3",
+    "note": "Copied from Drive. The Drive file is still there."
+  }
+]
