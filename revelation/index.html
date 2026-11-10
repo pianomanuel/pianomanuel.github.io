@@ -17,6 +17,24 @@
   --text: #e8e4d9;
   --muted: #a8a29e;
   --card: rgba(18, 38, 58, 0.85);
+  --bg-gradient: radial-gradient(ellipse at top, #1a365d 0%, var(--navy) 60%);
+  --header-bg: linear-gradient(180deg, rgba(10,22,40,0.4), transparent);
+  --session-header-bg: rgba(0,0,0,0.15);
+  --questions-color: #ddd;
+}
+body.light {
+  --navy: #f7f3e9;
+  --deep: #ffffff;
+  --gold: #9a7b1a;
+  --gold-light: #6b5420;
+  --cream: #0a1628;
+  --text: #1a1a1a;
+  --muted: #5c574e;
+  --card: rgba(255, 255, 255, 0.92);
+  --bg-gradient: radial-gradient(ellipse at top, #fff9e6 0%, #f7f3e9 60%);
+  --header-bg: linear-gradient(180deg, rgba(247,243,233,0.6), transparent);
+  --session-header-bg: rgba(0,0,0,0.04);
+  --questions-color: #333;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -24,13 +42,31 @@ body {
   background: var(--navy);
   color: var(--text);
   line-height: 1.65;
-  background-image: radial-gradient(ellipse at top, #1a365d 0%, var(--navy) 60%);
+  background-image: var(--bg-gradient);
+  transition: background 0.3s, color 0.3s;
 }
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+  background: var(--card);
+  border: 1px solid rgba(201,162,39,0.4);
+  color: var(--text);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s, border-color 0.2s;
+}
+.theme-toggle:hover { border-color: var(--gold); }
 .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
 header {
   text-align: center;
   padding: 4rem 1rem 2rem;
-  background: linear-gradient(180deg, rgba(10,22,40,0.4), transparent);
+  background: var(--header-bg);
 }
 h1 {
   font-family: 'Playfair Display', Georgia, serif;
@@ -96,7 +132,7 @@ h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(0,0,0,0.15);
+  background: var(--session-header-bg);
 }
 .session-header h3 {
   font-family: 'Playfair Display', serif;
@@ -116,7 +152,7 @@ h2 {
 ul { margin: 0.5rem 0 1rem 1.25rem; }
 li { margin-bottom: 0.35rem; }
 .questions { margin-top: 0.75rem; }
-.questions li { font-style: italic; color: #ddd; }
+.questions li { font-style: italic; color: var(--questions-color); }
 .application {
   background: rgba(201,162,39,0.08);
   border-left: 3px solid var(--gold);
@@ -153,10 +189,12 @@ footer {
 footer a { color: var(--gold); }
 @media (max-width: 640px) {
   .session-header { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+  .theme-toggle { top: 0.5rem; right: 0.5rem; padding: 0.4rem 0.7rem; font-size: 0.8rem; }
 }
 </style>
 </head>
 <body>
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode">🌙 Dark</button>
 <header>
   <div class="container">
     <h1>The Book of Revelation</h1>
@@ -400,6 +438,23 @@ sessions.forEach(s => {
     </div>
   `;
   container.appendChild(el);
+});
+
+// Theme toggle
+const toggle = document.getElementById('themeToggle');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const saved = localStorage.getItem('revelation-theme');
+
+function setTheme(isLight) {
+  document.body.classList.toggle('light', isLight);
+  toggle.textContent = isLight ? '☀️ Light' : '🌙 Dark';
+  localStorage.setItem('revelation-theme', isLight ? 'light' : 'dark');
+}
+
+setTheme(saved === 'light' || (!saved && !prefersDark));
+
+toggle.addEventListener('click', () => {
+  setTheme(!document.body.classList.contains('light'));
 });
 </script>
 </body>
