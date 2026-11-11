@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listen Court — TTS Player</title>
+<style>
+  :root {
+    --bg: #0a0c10;
+    --panel: #141820;
+    --gold: #c9a227;
+    --gold-dim: #8a7020;
+    --text: #e8e6e1;
+    --muted: #9a9590;
+    --accent: #4a90d9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #222;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  header h1 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  header h1 span { color: var(--gold); }
+  .status { margin-left: auto; font-size: 0.85rem; color: var(--muted); }
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  aside {
+    background: var(--panel);
+    border-right: 1px solid #222;
+    padding: 1rem 0;
+    overflow-y: auto;
+  }
+  aside h2 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    padding: 0 1.25rem 0.75rem;
+  }
+  .scene {
+    padding: 0.7rem 1.25rem;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    font-size: 0.95rem;
+  }
+  .scene:hover { background: #1c212b; }
+  .scene.active {
+    background: #1c212b;
+    border-left-color: var(--gold);
+    color: var(--gold);
+  }
+  .player {
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .transcript {
+    background: #0f1218;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 1.25rem;
+    min-height: 180px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  button {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid #333;
+    padding: 0.65rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.15s;
+  }
+  button:hover { border-color: var(--gold); color: var(--gold); }
+  button.primary {
+    background: var(--gold);
+    color: #0a0c10;
+    border-color: var(--gold);
+    font-weight: 600;
+  }
+  button.primary:hover { background: #d4b02e; }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .sliders {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .sliders label { display: flex; align-items: center; gap: 0.5rem; }
+  input[type="range"] { accent-color: var(--gold); }
+  select {
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid #333;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  footer {
+    padding: 0.75rem 1.5rem;
+    border-top: 1px solid #222;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  @media (max-width: 720px) {
+    main { grid-template-columns: 1fr; }
+    aside { border-right: none; border-bottom: 1px solid #222; max-height: 220px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Listen Court <span>TTS</span></h1>
+  <div class="status" id="status">Ready</div>
+</header>
+
+<main>
+  <aside>
+    <h2>Scenes</h2>
+    <div id="scenes"></div>
+  </aside>
+
+  <section class="player">
+    <div class="transcript" id="transcript" contenteditable="true">Select a scene or paste your own text here.</div>
+
+    <div class="controls">
+      <button class="primary" id="play">Play</button>
+      <button id="pause">Pause</button>
+      <button id="stop">Stop</button>
+      <select id="voice"></select>
+    </div>
+
+    <div class="sliders">
+      <label>Rate <input type="range" id="rate" min="0.5" max="1.5" step="0.05" value="1"></label>
+      <label>Pitch <input type="range" id="pitch" min="0.5" max="1.5" step="0.05" value="1"></label>
+      <label>Volume <input type="range" id="volume" min="0" max="1" step="0.05" value="1"></label>
+    </div>
+  </section>
+</main>
+
+<footer>Private Listen Court · Browser SpeechSynthesis · Not hosted publicly</footer>
+
+<script>
+const scenes = [
+  { id: "mind", name: "Mind Surrender", text: "You are safe. Your thoughts can rest. Listen. The next words settle deeper." },
+  { id: "castle", name: "Castle L3 L4", text: "Level three holds. Level four opens. The corridor is quiet. Step forward." },
+  { id: "crew", name: "Meet The Crew", text: "Captain has the ship. Eve is second. The stations are ready. Report." },
+  { id: "phoenix", name: "Phoenix Flare Commish", text: "Phoenix Flare on station. Commish is open. The hour is yours." },
+  { id: "rest", name: "Rest Lounge", text: "Sunday rest day. The lounge is soft. The piano waits. Breathe." },
+  { id: "piano", name: "Piano", text: "The keys are under your hands. Play what the room needs." },
+  { id: "holo", name: "Hologram", text: "The projection holds. Light, form, presence. Stay with it." },
+  { id: "bridge", name: "Bridge", text: "Viewscreen is clear. Stations green. You have the conn." },
+  { id: "corridor", name: "Corridor", text: "Gold trim. Soft light. The door ahead is open." },
+  { id: "empty", name: "Empty Bridge", text: "No one else is here. The chair is yours. The ship is quiet." },
+  { id: "pink", name: "Pink Door", text: "The door is open. Warm light spills out. Step through." }
+];
+
+const scenesEl = document.getElementById("scenes");
+const transcriptEl = document.getElementById("transcript");
+const statusEl = document.getElementById("status");
+const playBtn = document.getElementById("play");
+const pauseBtn = document.getElementById("pause");
+const stopBtn = document.getElementById("stop");
+const voiceSelect = document.getElementById("voice");
+const rateInput = document.getElementById("rate");
+const pitchInput = document.getElementById("pitch");
+const volumeInput = document.getElementById("volume");
+
+let currentUtterance = null;
+let voices = [];
+
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
+  voiceSelect.innerHTML = "";
+  const preferred = voices.filter(v => v.lang.startsWith("en"));
+  const list = preferred.length ? preferred : voices;
+  list.forEach(v => {
+    const opt = document.createElement("option");
+    opt.value = v.name;
+    opt.textContent = `${v.name} (${v.lang})`;
+    voiceSelect.appendChild(opt);
+  });
+  if (list.length === 0) {
+    const opt = document.createElement("option");
+    opt.textContent = "Default";
+    voiceSelect.appendChild(opt);
+  }
+}
+
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+scenes.forEach(s => {
+  const div = document.createElement("div");
+  div.className = "scene";
+  div.textContent = s.name;
+  div.dataset.id = s.id;
+  div.onclick = () => selectScene(s);
+  scenesEl.appendChild(div);
+});
+
+function selectScene(s) {
+  document.querySelectorAll(".scene").forEach(el => el.classList.remove("active"));
+  document.querySelector(`.scene[data-id="${s.id}"]`).classList.add("active");
+  transcriptEl.textContent = s.text;
+  statusEl.textContent = s.name;
+}
+
+function getSelectedVoice() {
+  const name = voiceSelect.value;
+  return voices.find(v => v.name === name) || null;
+}
+
+function speak() {
+  speechSynthesis.cancel();
+  const text = transcriptEl.textContent.trim();
+  if (!text || text === "Select a scene or paste your own text here.") {
+    statusEl.textContent = "Nothing to speak";
+    return;
+  }
+  currentUtterance = new SpeechSynthesisUtterance(text);
+  const voice = getSelectedVoice();
+  if (voice) currentUtterance.voice = voice;
+  currentUtterance.rate = parseFloat(rateInput.value);
+  currentUtterance.pitch = parseFloat(pitchInput.value);
+  currentUtterance.volume = parseFloat(volumeInput.value);
+  currentUtterance.onstart = () => statusEl.textContent = "Speaking…";
+  currentUtterance.onend = () => statusEl.textContent = "Ready";
+  currentUtterance.onerror = () => statusEl.textContent = "Error";
+  speechSynthesis.speak(currentUtterance);
+}
+
+playBtn.onclick = speak;
+pauseBtn.onclick = () => {
+  if (speechSynthesis.speaking && !speechSynthesis.paused) {
+    speechSynthesis.pause();
+    statusEl.textContent = "Paused";
+  } else if (speechSynthesis.paused) {
+    speechSynthesis.resume();
+    statusEl.textContent = "Speaking…";
+  }
+};
+stopBtn.onclick = () => {
+  speechSynthesis.cancel();
+  statusEl.textContent = "Stopped";
+};
+
+// Select first scene by default
+if (scenes.length) selectScene(scenes[0]);
+</script>
+</body>
+</html>
